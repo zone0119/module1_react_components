@@ -8,8 +8,5 @@ Screenshot: 30.10.2023
 
 Deploy: 
 
-[https://github.com/zone0119/module1_react_components/tree/vapp]
-
-
-[https://zone0119.github.io/module1_react_components/]
+[https://inspiring-crepe-04bfcc.netlify.app/]
 Done: 30.10.2023 / deadline 30.10.2023
