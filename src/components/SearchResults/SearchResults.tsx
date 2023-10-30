@@ -9,6 +9,7 @@ interface State {
   pokemons: Pokemon[];
   filteredPokemons: Pokemon[];
   searchQuery: string;
+  isLoading: boolean;
 }
 
 class SearchResults extends Component<{}, State> {
@@ -18,6 +19,7 @@ class SearchResults extends Component<{}, State> {
       pokemons: [],
       filteredPokemons: [],
       searchQuery: '',
+      isLoading: true,
     };
   }
 
@@ -31,21 +33,35 @@ class SearchResults extends Component<{}, State> {
       const response = await fetch('https://pokeapi.co/api/v2/pokemon');
       if (response.ok) {
         const data = await response.json();
-        this.setState({ pokemons: data.results, filteredPokemons: data.results });
+        this.setState({ 
+          pokemons: data.results, 
+          filteredPokemons: data.results,
+          isLoading: false, 
+        });
       } else {
         console.error('Failed to fetch data');
+        this.setState({ isLoading: false });
       }
     } catch (error) {
       console.error('Error fetching data:', error);
+      this.setState({ isLoading: false });
     }
   };
 
   handleSearch = (event: React.FormEvent) => {
     event.preventDefault();
+    this.setState({ isLoading: true });
+
     const { searchQuery, pokemons } = this.state;
     const filtered = pokemons.filter(pokemon =>
       pokemon.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    setTimeout(() => {
+      this.setState({ filteredPokemons: filtered, isLoading: false });
+      localStorage.setItem('searchTerm', searchQuery);
+    }, 1000);
+
     this.setState({ filteredPokemons: filtered });
     localStorage.setItem('searchTerm', searchQuery); 
   };
@@ -67,13 +83,13 @@ class SearchResults extends Component<{}, State> {
     const savedSearchTerm = localStorage.getItem('searchTerm');
     if (savedSearchTerm) {
       this.setState({ searchQuery: savedSearchTerm }, () => {
-        this.handleSearch(fakeEvent);
+        this.handleSearch(fakeEvent as React.FormEvent);
       });
     }
   };
 
   render(): ReactNode {
-    const { filteredPokemons, searchQuery } = this.state;
+    const { filteredPokemons, searchQuery, isLoading  } = this.state;
 
     return (
       <div>
@@ -83,7 +99,11 @@ class SearchResults extends Component<{}, State> {
           handleSearch={this.handleSearch}
           handleInputChange={this.handleInputChange}
         />
-        <PokemonList filteredPokemons={filteredPokemons} />
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <PokemonList filteredPokemons={filteredPokemons} />
+        )}
       </div>
     );
   }
