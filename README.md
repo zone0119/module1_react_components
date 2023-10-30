@@ -12,3 +12,5 @@ Deploy:
 
 
 Done: 30.10.2023 / deadline 30.10.2023
+
+pull request: [https://github.com/zone0119/module1_react_components/pull/1]
