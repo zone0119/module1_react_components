@@ -39,7 +39,7 @@ class SearchResults extends Component<{}, State> {
         this.setState({ 
           pokemons: data.results, 
           filteredPokemons: data.results,
-          isLoading: false, 
+          isLoading: true, 
         });
       } else {
         console.error('Failed to fetch data');
@@ -48,6 +48,10 @@ class SearchResults extends Component<{}, State> {
     } catch (error) {
       console.error('Error fetching data:', error);
       this.setState({ isLoading: false });
+    } finally {      
+        setTimeout(() => {
+          this.setState({isLoading: false });        
+        }, 1000);      
     }
   };
 
@@ -63,7 +67,7 @@ class SearchResults extends Component<{}, State> {
     setTimeout(() => {
       this.setState({ filteredPokemons: filtered, isLoading: false });
       localStorage.setItem('searchTerm', searchQuery);
-    }, 1000);
+    }, 5000);
 
     this.setState({ filteredPokemons: filtered });
     localStorage.setItem('searchTerm', searchQuery); 
