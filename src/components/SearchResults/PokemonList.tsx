@@ -11,11 +11,11 @@ interface PokemonListProps {
 
 const PokemonList: React.FC<PokemonListProps> = ({ filteredPokemons }) => {
   return (
-    <ul>
+    <ol>
       {filteredPokemons.map(pokemon => (
         <PokemonItem key={pokemon.name} name={pokemon.name} />
       ))}
-    </ul>
+    </ol>
   );
 };
 
