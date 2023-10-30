@@ -1,4 +1,6 @@
 import React, { Component, ReactNode } from 'react';
+import SearchForm from './SearchForm';
+import PokemonList from './PokemonList';
 
 interface Pokemon {
   name: string;
@@ -11,6 +13,7 @@ interface State {
   searchQuery: string;
   isLoading: boolean;
 }
+
 
 class SearchResults extends Component<{}, State> {
   constructor(props: {}) {
@@ -108,51 +111,5 @@ class SearchResults extends Component<{}, State> {
     );
   }
 }
-
-interface SearchFormProps {
-  searchQuery: string;
-  handleSearch: (event: React.FormEvent) => void;
-  handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-const SearchForm: React.FC<SearchFormProps> = ({
-  searchQuery,
-  handleSearch,
-  handleInputChange,
-}) => {
-  return (
-    <form onSubmit={handleSearch}>
-      <input
-        type="text"
-        value={searchQuery}
-        onChange={handleInputChange}
-        placeholder="Search Pokemon"
-      />
-      <button type="submit">Search</button>
-    </form>
-  );
-};
-
-interface PokemonListProps {
-  filteredPokemons: Pokemon[];
-}
-
-const PokemonList: React.FC<PokemonListProps> = ({ filteredPokemons }) => {
-  return (
-    <ul>
-      {filteredPokemons.map(pokemon => (
-        <PokemonItem key={pokemon.name} name={pokemon.name} />
-      ))}
-    </ul>
-  );
-};
-
-interface PokemonItemProps {
-  name: string;
-}
-
-const PokemonItem: React.FC<PokemonItemProps> = ({ name }) => {
-  return <li>{name}</li>;
-};
 
 export default SearchResults;
