@@ -4,24 +4,27 @@
 .page-container {
     display: flex;
     flex-direction: column;
+    width: 90vh;
     height: 90vh;
+
   }
   
 
 .top-section,
 .bottom-section {
-  flex: 1;
+
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  flex-direction:row;
 }
 
-.top-section {
-
-  border: #f0f0f0 2px solid; 
+.top-section > div {
+  display: flex;
+  flex-direction:row;
 }
 
 .bottom-section {
-  border: #dcdcdc 2px solid; 
+  border: #6ed29e 2px solid; 
   color: #4ee;
 }
