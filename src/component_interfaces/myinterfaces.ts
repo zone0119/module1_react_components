@@ -1,6 +1,5 @@
 
 export interface PagesProps {
-  setSearchResult: void;
   searchResult: string;
 }
 
