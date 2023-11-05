@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PokemonDetailsStyle from './PokemonDetails.module.css';
+import { useNavigate } from 'react-router-dom';
 
 
 interface Ability {
@@ -22,6 +23,13 @@ interface Props {
 const PokemonDetails: React.FC<Props> = ({ name }) => {
   const [details, setDetails] = useState<PokemonDetails | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
+
+
+  const handleHideDetails = () => {
+    navigate('/'); 
+  };
+
 
   useEffect(() => {
     const fetchPokemonDetails = async () => {
@@ -52,9 +60,15 @@ const PokemonDetails: React.FC<Props> = ({ name }) => {
 
   return (
     <div className={PokemonDetailsStyle['details-box']}>
+
+      <button onClick={handleHideDetails}>Close Details</button>
+
+
       <h3 className={PokemonDetailsStyle['supername']}>{details.name}</h3>
       <p>Type: {details.types.map((type) => type.type.name).join(', ')}</p>
       <p>Abilities: {details.abilities.map((ability) => ability.ability.name).join(', ')}</p>
+
+
     </div>
   );
 };
