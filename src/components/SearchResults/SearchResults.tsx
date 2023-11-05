@@ -1,147 +1,107 @@
-import React, { Component, ReactNode } from 'react';
+import React, { useState, useEffect, FormEvent  } from 'react';
 import SearchForm from './SearchForm';
 import PokemonList from './PokemonList';
-
 
 interface Pokemon {
   name: string;
   url: string;
 }
 
-interface State {
-  pokemons: Pokemon[];
-  filteredPokemons: Pokemon[];
-  searchQuery: string;
-  isLoading: boolean;
-  count: number;
-}
-
-
 interface SearchResultsProps {
   setSearchResultProps: (result: unknown) => void;
+  handleSearch: (event: FormEvent<Element>) => void; 
 }
 
-class SearchResults extends Component<SearchResultsProps, State > {
 
-  state: State= {
-    pokemons: [],
-    filteredPokemons: [],
-    searchQuery: '',
-    isLoading: true,
-    count: 0
-  };
+const SearchResults: React.FC<SearchResultsProps> = ({ setSearchResultProps }) => {
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [filteredPokemons, setFilteredPokemons] = useState<Pokemon[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [count, setCount] = useState<number>(0);
 
-
-  constructor(props: SearchResultsProps) {
-    super(props);
-   
-
-    this.increase = this.increase.bind(this);
-
-  }
-
-  increase(){
-    console.log('testesultProps'  + this.state.count);
-
-    this.setState({
-      count: this.state.count + 1
-      });
-  }
-
-  componentDidMount() {
-    this.fetchData();
-    this.loadSearchTerm();
-  }
-
-  fetchData = async () => {
+  const fetchData = async () => {
     try {
       const response = await fetch('https://pokeapi.co/api/v2/pokemon');
       if (response.ok) {
         const data = await response.json();
-        this.setState({ 
-          pokemons: data.results, 
-          filteredPokemons: data.results,
-          isLoading: true, 
-        });
+        setPokemons(data.results);
+        setFilteredPokemons(data.results);
+        setIsLoading(true);
       } else {
         console.error('Failed to fetch data');
-        this.setState({ isLoading: false });
+        setIsLoading(false);
       }
     } catch (error) {
       console.error('Error fetching data:', error);
-      this.setState({ isLoading: false });
-    } finally {      
-        setTimeout(() => {
-          this.setState({isLoading: false });        
-        }, 1000);      
+      setIsLoading(false);
+    } finally {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
     }
   };
 
-  handleSearch = (event: React.FormEvent) => {
-    event.preventDefault();
-    this.setState({ isLoading: true });
 
-    const { searchQuery, pokemons } = this.state;
+  const handleSearch = (event: FormEvent<Element>) => {
+
+    event.preventDefault();
+    setIsLoading(true);
+  
     const filtered = pokemons.filter(pokemon =>
       pokemon.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
-
+  
     setTimeout(() => {
-      this.setState({ filteredPokemons: filtered, isLoading: false });
+      setFilteredPokemons(filtered);
+      setIsLoading(false);
       localStorage.setItem('searchTerm', searchQuery);
     }, 5000);
-
-    this.setState({ filteredPokemons: filtered });
-    localStorage.setItem('searchTerm', searchQuery); 
   };
+  
 
-  handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchQuery: event.target.value });
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newSearchQuery = event.target.value;
+    setSearchQuery(newSearchQuery);
+    localStorage.setItem('searchTerm', newSearchQuery);
   };
+  
 
-
- 
-
-  loadSearchTerm = () => {
-
-    const fakeEvent = {
-      preventDefault: () => {} 
-    } as React.FormEvent<HTMLFormElement>;
-    
-
+  const loadSearchTerm = () => {
     const savedSearchTerm = localStorage.getItem('searchTerm');
-    if (savedSearchTerm) {
-      this.setState({ searchQuery: savedSearchTerm }, () => {
-        this.handleSearch(fakeEvent as React.FormEvent);
-      });
+    if (savedSearchTerm && savedSearchTerm !== searchQuery) {
+      setSearchQuery(savedSearchTerm);
     }
   };
+  
+  useEffect(() => {
+    fetchData();
+    loadSearchTerm();
+  }, []);
+  
+  
+  
 
-  render(): ReactNode {
-    const { filteredPokemons, searchQuery, isLoading  } = this.state;
-    console.log(typeof(JSON.stringify(filteredPokemons[0])));
-    return (
-      <div>
+  useEffect(() => {
+    fetchData();
+    loadSearchTerm();
+  }, []);  
 
-        <button onClick={() => {this.props.setSearchResultProps(JSON.stringify(filteredPokemons[0]))} }>+
-        </button>
+  console.log(typeof JSON.stringify(filteredPokemons[0]));
 
-        
+  return (
+    <div>
+      <button onClick={() => setSearchResultProps(JSON.stringify(filteredPokemons[0]))}>+</button>
 
-        <h1>Pokemon Search</h1>
-        <SearchForm
-          searchQuery={searchQuery}
-          handleSearch={this.handleSearch}
-          handleInputChange={this.handleInputChange}
-        />
-        {isLoading ? (
-          <div>Loading...</div>
-        ) : (
-          <PokemonList filteredPokemons={filteredPokemons} />
-        )}
-      </div>
-    );
-  }
-}
+      <h1>Pokemon Search</h1>
+      <SearchForm
+        searchQuery={searchQuery}
+        handleSearch={handleSearch}
+        handleInputChange={handleInputChange}
+      />
+      {isLoading ? <div>Loading...</div> : <PokemonList filteredPokemons={filteredPokemons} />}
+    </div>
+  );
+};
 
 export default SearchResults;
