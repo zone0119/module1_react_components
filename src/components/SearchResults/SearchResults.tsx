@@ -1,6 +1,8 @@
 import React, { useState, useEffect, FormEvent } from 'react';
-import { useNavigate, useParams, Link } from 'react-router-dom';
+import { useNavigate, useParams, Link, Outlet } from 'react-router-dom';
+import PokemonDetails from './PokemonDetails'; 
 import paginationStyle from './Pagination.module.css';
+import SearchResultsStyle from './SearchResults.module.css';
 
 interface Pokemon {
   name: string;
@@ -14,7 +16,7 @@ const SearchResults: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [paginationLinks, setPaginationLinks] = useState<JSX.Element[]>([]);
   const navigate = useNavigate();
-  const { page } = useParams();
+  const { page, details } = useParams();
 
   const resultsPerPage = 5;
   const apiURL = `https://pokeapi.co/api/v2/pokemon`;
@@ -43,13 +45,13 @@ const SearchResults: React.FC = () => {
         for (let i = 1; i <= numberOfPages; i++) {
           links.push(
             <Link
-            className={`${paginationStyle['divider']} ${i === currentPage ? paginationStyle['currentpage'] : ''}`}
-            key={i}
-            to={`/search/${i}`}
-            style={{ fontWeight: i === currentPage ? 'bold' : 'normal' }}
-          >
-            {i}
-          </Link>
+              className={`${paginationStyle['divider']} ${i === currentPage ? paginationStyle['currentpage'] : ''}`}
+              key={i}
+              to={`/search/${i}`}
+              style={{ fontWeight: i === currentPage ? 'bold' : 'normal' }}
+            >
+              {i}
+            </Link>
           );
         }
 
@@ -83,21 +85,34 @@ const SearchResults: React.FC = () => {
     localStorage.setItem('searchTerm', newSearchQuery);
   };
 
+  const handlePokemonClick = (pokemonName: string) => {
+    navigate(`/?page=${page}&details=${pokemonName}`);
+  };
+  console.log('details' + details);
+
   return (
-    <div>
-      <h1>Pokemon Search</h1>
-      <form onSubmit={handleSearch}>
-        <input type="text" value={searchQuery} onChange={handleInputChange} />
-        <button type="submit">Search</button>
-      </form>
-      {isLoading ? <div>Loading...</div> : (
-        <ul>
-          {filteredPokemons.map((pokemon, index) => (
-            <li key={index}>{pokemon.name}</li>
-          ))}
-        </ul>
-      )}
-      <div className={paginationStyle['pagination-box']} >
+    <div className={SearchResultsStyle['page']}>
+      <div className={SearchResultsStyle['left-section']}>
+        <h1>Pokemon Search</h1>
+        <form onSubmit={handleSearch}>
+          <input type="text" value={searchQuery} onChange={handleInputChange} />
+          <button type="submit">Search</button>
+        </form>
+        {isLoading ? <div>Loading...</div> : (
+          <ul>
+            {filteredPokemons.map((pokemon, index) => (
+              <li key={index} onClick={() => handlePokemonClick(pokemon.name)}>
+                {pokemon.name}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+      <div className={SearchResultsStyle['right-section']}>2
+        {details && <PokemonDetails name={details} />}
+        <Outlet />
+      </div>
+      <div className={paginationStyle['pagination-box']}>
         {paginationLinks}
       </div>
     </div>
