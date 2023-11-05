@@ -1,0 +1,30 @@
+
+
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    width: 90vh;
+    height: 90vh;
+
+  }
+  
+
+.top-section,
+.bottom-section {
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction:row;
+}
+
+.top-section > div {
+  display: flex;
+  flex-direction:row;
+}
+
+.bottom-section {
+  border: #6ed29e 2px solid; 
+  color: #4ee;
+}
