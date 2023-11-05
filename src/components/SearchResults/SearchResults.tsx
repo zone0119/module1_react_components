@@ -16,7 +16,10 @@ const SearchResults: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [paginationLinks, setPaginationLinks] = useState<JSX.Element[]>([]);
   const navigate = useNavigate();
-  const { page, details } = useParams();
+  const { page, details, itemId } = useParams();
+
+
+
 
   const resultsPerPage = 5;
   const apiURL = `https://pokeapi.co/api/v2/pokemon`;
@@ -86,9 +89,9 @@ const SearchResults: React.FC = () => {
   };
 
   const handlePokemonClick = (pokemonName: string) => {
-    navigate(`/?page=${page}&details=${pokemonName}`);
+    navigate(`/details/${pokemonName}`);
   };
-  console.log('details' + details);
+  
 
   return (
     <div className={SearchResultsStyle['page']}>
@@ -108,8 +111,8 @@ const SearchResults: React.FC = () => {
           </ul>
         )}
       </div>
-      <div className={SearchResultsStyle['right-section']}>2
-        {details && <PokemonDetails name={details} />}
+      <div className={SearchResultsStyle['right-section']}>
+        {itemId && <PokemonDetails name={itemId} />}
         <Outlet />
       </div>
       <div className={paginationStyle['pagination-box']}>
