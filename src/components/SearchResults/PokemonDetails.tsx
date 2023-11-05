@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import PokemonDetailsStyle from './PokemonDetails.module.css';
+
 
 interface Ability {
   ability: {
@@ -41,16 +43,16 @@ const PokemonDetails: React.FC<Props> = ({ name }) => {
   }, [name]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className={PokemonDetailsStyle['loader']}>Loading...</div>;
   }
 
   if (!details) {
-    return <div>No details available for this Pokemon.</div>;
+    return <div className={PokemonDetailsStyle['error']}>No details available for this Pokemon.</div>;
   }
 
   return (
-    <div>
-      <h2>{details.name}</h2>
+    <div className={PokemonDetailsStyle['details-box']}>
+      <h3 className={PokemonDetailsStyle['supername']}>{details.name}</h3>
       <p>Type: {details.types.map((type) => type.type.name).join(', ')}</p>
       <p>Abilities: {details.abilities.map((ability) => ability.ability.name).join(', ')}</p>
     </div>
