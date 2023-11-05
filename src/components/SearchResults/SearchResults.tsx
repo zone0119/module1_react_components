@@ -89,6 +89,7 @@ const SearchResults: React.FC = () => {
   };
 
   const handlePokemonClick = (pokemonName: string) => {
+
     navigate(`/details/${pokemonName}`);
   };
   
