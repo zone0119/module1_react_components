@@ -1,30 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-class ThrowError extends React.Component {
+const ThrowError = () => {
+  const [err, setErr] = useState(false);
 
-
-  state = {
-    err: false
-  }
-
-
-  handleClick = () => {
-    this.setState({ err: true });    
+  const handleClick = () => {
+    setErr(true);
   };
 
-  render() {
-
-    if (this.state.err) {
-      console.log('clicker + err' + this.state.err);
-      throw new Error('clicker by button throw error ');
-    }
-
-    return (
-      <button onClick={this.handleClick}>
-        Throw error!
-      </button>
-    );
+  if (err) {
+    console.log('clicker + err' + err);
+    throw new Error('clicker by button throw error');
   }
-}
+
+  return (
+    <button onClick={handleClick}>
+      Throw error!
+    </button>
+  );
+};
 
 export default ThrowError;
