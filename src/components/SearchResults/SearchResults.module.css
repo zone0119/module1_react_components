@@ -8,7 +8,7 @@
 .left-section {
     flex: 1;
     margin-right: 20px;
-    border: 1px solid red;
+    padding: 20px;
     background-color: rgb(155, 125, 255);
   }
   
@@ -49,7 +49,10 @@
   .left-section li:hover {
     background-color: #f0f0f0;
   }
-  
+  .left-section button {
+    margin: 10px;
+  }
+
   .right-section {
     flex: 1;
   }
