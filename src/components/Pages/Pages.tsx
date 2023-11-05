@@ -9,8 +9,6 @@ const Pages = (props: PagesProps) => {
 
 
 
-  console.log(searchResult);
-
   return (
     <div className={pageStyle['page-container']}>
       <div className={pageStyle['top-section']}>
