@@ -4,19 +4,24 @@ import PokemonDetails from './PokemonDetails';
 import paginationStyle from './Pagination.module.css';
 import SearchResultsStyle from './SearchResults.module.css';
 
-interface Pokemon {
-  name: string;
-  url: string;
-}
+import { usePokemonContext } from './PokemonContext';
 
 const SearchResults: React.FC = () => {
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-  const [filteredPokemons, setFilteredPokemons] = useState<Pokemon[]>([]);
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [paginationLinks, setPaginationLinks] = useState<JSX.Element[]>([]);
-  const navigate = useNavigate();
+  const {
+    pokemons,
+    setPokemons,
+    filteredPokemons,
+    setFilteredPokemons,
+    searchQuery,
+    setSearchQuery,
+    isLoading,
+    setIsLoading,
+    paginationLinks,
+    setPaginationLinks,
+  } = usePokemonContext();
+
   const { page, details, itemId } = useParams();
+  const navigate = useNavigate();
 
 
 
