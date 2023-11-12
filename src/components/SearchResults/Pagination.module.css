@@ -1,0 +1,22 @@
+
+.pagination-box {
+    display: flex;
+    flex-wrap: wrap;
+    width: 200px;
+    margin: 0 auto;
+}
+
+.divider {
+    padding: 5px 10px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  text-decoration: none;
+  color: rgb(80, 214, 39);
+  }
+
+.currentpage {
+    color: blue;
+    background-color: rgb(194, 194, 194);
+}
+  
