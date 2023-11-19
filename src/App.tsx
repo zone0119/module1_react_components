@@ -6,7 +6,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 function App() {
 
 
-
   const searchResult = 'search result..';
 
   return (
