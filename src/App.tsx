@@ -1,35 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// App.tsx
 
-function App() {
-  const [count, setCount] = useState(0)
+import React from 'react';
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import ReactHookFormComponent from './components/ReactHookFormComponent';
+import UncontrolledFormComponent from './components/UncontrolledFormComponent';
+import MainPageComponent from './components/MainPageComponent';
 
+const App: React.FC = () => {
   return (
-    <>
+    <Router>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Main</Link>
+            </li>
+            <li>
+              <Link to="/uncontrolled-form">Uncontrolled Form</Link>
+            </li>
+            <li>
+              <Link to="/react-hook-form">React Hook Form</Link>
+            </li>
+          </ul>
+        </nav>
 
-export default App
+        <Switch>
+          <Route path="/uncontrolled-form">
+            <UncontrolledFormComponent />
+          </Route>
+          <Route path="/react-hook-form">
+            <ReactHookFormComponent />
+          </Route>
+          <Route path="/">
+            <MainPageComponent />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
+  );
+};
+
+export default App;
