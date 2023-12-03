@@ -1,7 +1,7 @@
 // App.tsx
 
 import React from 'react';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import ReactHookFormComponent from './components/ReactHookFormComponent';
 import UncontrolledFormComponent from './components/UncontrolledFormComponent';
 import MainPageComponent from './components/MainPageComponent';
@@ -24,7 +24,7 @@ const App: React.FC = () => {
           </ul>
         </nav>
 
-        <Switch>
+        <Routes>
           <Route path="/uncontrolled-form">
             <UncontrolledFormComponent />
           </Route>
@@ -34,7 +34,7 @@ const App: React.FC = () => {
           <Route path="/">
             <MainPageComponent />
           </Route>
-        </Switch>
+        </Routes>
       </div>
     </Router>
   );
